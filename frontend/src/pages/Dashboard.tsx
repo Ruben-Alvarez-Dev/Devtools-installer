@@ -1,4 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import {
+  Box,
+  Grid,
+  Card,
+  CardContent,
+  Typography,
+  CircularProgress,
+  Alert,
+} from '@mui/material';
 import { useAppStore } from '../stores/appStore';
 import { ToolCard } from '../components/ToolCard';
 import { Header } from '../components/Header';
@@ -26,64 +35,77 @@ export const Dashboard: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="flex-1 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-slate-400">Loading tools...</p>
-        </div>
-      </div>
+      <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Box sx={{ textAlign: 'center' }}>
+          <CircularProgress size={48} />
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+            Loading tools...
+          </Typography>
+        </Box>
+      </Box>
     );
   }
 
   if (error) {
     return (
-      <div className="flex-1 flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-red-400 mb-2">Error loading catalog</p>
-          <p className="text-slate-500 text-sm">{error}</p>
-        </div>
-      </div>
+      <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', p: 3 }}>
+        <Alert severity="error" sx={{ maxWidth: 400 }}>
+          <Typography variant="subtitle2">Error loading catalog</Typography>
+          <Typography variant="body2">{error}</Typography>
+        </Alert>
+      </Box>
     );
   }
 
+  const stats = [
+    { label: 'Total Tools', value: tools.length },
+    { label: 'Installed', value: Object.values(toolStates).filter(s => s.status === 'installed').length },
+    { label: 'Updates Available', value: Object.values(toolStates).filter(s => s.updateAvailable).length },
+    { label: 'Categories', value: new Set(tools.map(t => t.category)).size },
+  ];
+
   return (
-    <div className="flex-1 flex flex-col overflow-hidden">
+    <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <Header />
-      <div className="flex-1 overflow-y-auto p-6">
+      <Box sx={{ flex: 1, overflowY: 'auto', p: 3 }}>
         {/* Stats */}
-        <div className="grid grid-cols-4 gap-4 mb-6">
-          <StatCard label="Total Tools" value={tools.length} />
-          <StatCard label="Installed" value={Object.values(toolStates).filter(s => s.status === 'installed').length} />
-          <StatCard label="Updates Available" value={Object.values(toolStates).filter(s => s.updateAvailable).length} />
-          <StatCard label="Categories" value={new Set(tools.map(t => t.category)).size} />
-        </div>
+        <Grid container spacing={2} sx={{ mb: 3 }}>
+          {stats.map((stat) => (
+            <Grid size={{ xs: 6, sm: 3 }} key={stat.label}>
+              <Card>
+                <CardContent sx={{ py: 2 }}>
+                  <Typography variant="h4" fontWeight={700}>
+                    {stat.value}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {stat.label}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
 
         {/* Tools grid */}
         {filteredTools.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-slate-400">No tools found</p>
-          </div>
+          <Box sx={{ textAlign: 'center', py: 6 }}>
+            <Typography color="text.secondary">No tools found</Typography>
+          </Box>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <Grid container spacing={2}>
             {filteredTools.map((tool) => (
-              <ToolCard
-                key={tool.id}
-                tool={tool}
-                state={toolStates[tool.id]}
-                onInstall={onInstall}
-                onSelect={() => {}}
-              />
+              <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={tool.id}>
+                <ToolCard
+                  tool={tool}
+                  state={toolStates[tool.id]}
+                  onInstall={onInstall}
+                  onSelect={() => {}}
+                />
+              </Grid>
             ))}
-          </div>
+          </Grid>
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
-
-const StatCard: React.FC<{ label: string; value: number }> = ({ label, value }) => (
-  <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
-    <p className="text-2xl font-bold text-white">{value}</p>
-    <p className="text-sm text-slate-400">{label}</p>
-  </div>
-);
