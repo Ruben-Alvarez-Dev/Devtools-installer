@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Grid,
@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import { useAppStore } from '../stores/appStore';
 import { ToolCard } from '../components/ToolCard';
+import { ToolDetailModal } from '../components/ToolDetailModal';
 import { Header } from '../components/Header';
 
 export const Dashboard: React.FC = () => {
@@ -20,8 +21,14 @@ export const Dashboard: React.FC = () => {
     searchQuery,
     isLoading,
     error,
-    onInstall
+    onInstall,
+    selectedToolId,
+    setSelectedToolId,
   } = useAppStore();
+
+  const [detailOpen, setDetailOpen] = useState(false);
+
+  const selectedTool = tools.find(t => t.id === selectedToolId) || null;
 
   // Filter tools based on category and search
   const filteredTools = tools.filter((tool) => {
@@ -32,6 +39,16 @@ export const Dashboard: React.FC = () => {
       tool.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesCategory && matchesSearch;
   });
+
+  const handleSelectTool = (toolId: string) => {
+    setSelectedToolId(toolId);
+    setDetailOpen(true);
+  };
+
+  const handleCloseDetail = () => {
+    setDetailOpen(false);
+    setSelectedToolId(null);
+  };
 
   if (isLoading) {
     return (
@@ -99,13 +116,22 @@ export const Dashboard: React.FC = () => {
                   tool={tool}
                   state={toolStates[tool.id]}
                   onInstall={onInstall}
-                  onSelect={() => {}}
+                  onSelect={handleSelectTool}
                 />
               </Grid>
             ))}
           </Grid>
         )}
       </Box>
+
+      {/* Tool Detail Modal */}
+      <ToolDetailModal
+        tool={selectedTool}
+        state={selectedToolId ? toolStates[selectedToolId] : undefined}
+        open={detailOpen}
+        onClose={handleCloseDetail}
+        onInstall={onInstall}
+      />
     </Box>
   );
 };

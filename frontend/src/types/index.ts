@@ -1,8 +1,32 @@
 // Domain types matching Go backend
 
-export type Category = 'runtime' | 'ide' | 'devops' | 'cli';
+export type Category =
+  | 'runtime'
+  | 'ide'
+  | 'ai_ide'
+  | 'ai_cli'
+  | 'ai_extension'
+  | 'local_model'
+  | 'self_hosted'
+  | 'devops'
+  | 'cli'
+  | 'database'
+  | 'framework';
 
-export type InstallMethodType = 'homebrew' | 'apt' | 'dnf' | 'winget' | 'choco' | 'direct' | 'script';
+export type InstallMethodType =
+  | 'homebrew'
+  | 'homebrew-cask'
+  | 'apt'
+  | 'dnf'
+  | 'winget'
+  | 'choco'
+  | 'snap'
+  | 'direct'
+  | 'script'
+  | 'npm'
+  | 'pip'
+  | 'cargo'
+  | 'go';
 
 export type Platform = 'darwin' | 'linux' | 'windows';
 
@@ -27,6 +51,9 @@ export interface Tool {
   icon?: string;
   website?: string;
   documentation?: string;
+  whySpecial?: string;
+  idealUse?: string;
+  configPath?: string;
   installMethods: InstallMethod[];
   tags?: string[];
 }
