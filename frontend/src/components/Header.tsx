@@ -1,46 +1,97 @@
 import React from 'react';
-import { MagnifyingGlassIcon, BellIcon } from '@heroicons/react/24/outline';
+import { Box, InputBase, IconButton, Chip, Badge, alpha, useTheme } from '@mui/material';
+import { Search as SearchIcon, Notifications as NotificationsIcon } from '@mui/icons-material';
 import { useAppStore } from '../stores/appStore';
 
 export const Header: React.FC = () => {
   const { searchQuery, setSearchQuery, platformInfo } = useAppStore();
+  const theme = useTheme();
 
   return (
-    <header className="bg-slate-800 border-b border-slate-700 px-6 py-4">
-      <div className="flex items-center justify-between">
-        {/* Search */}
-        <div className="relative flex-1 max-w-md">
-          <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-          <input
-            type="text"
-            placeholder="Search tools..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-slate-700 border border-slate-600 rounded-lg pl-10 pr-4 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-        </div>
+    <Box
+      sx={{
+        px: 3,
+        py: 2,
+        bgcolor: 'background.paper',
+        borderBottom: 1,
+        borderColor: 'divider',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: 2,
+      }}
+    >
+      {/* Search */}
+      <Box
+        sx={{
+          position: 'relative',
+          maxWidth: 400,
+          flex: 1,
+        }}
+      >
+        <Box
+          sx={{
+            position: 'absolute',
+            left: 12,
+            top: '50%',
+            transform: 'translateY(-50%)',
+            color: 'text.secondary',
+          }}
+        >
+          <SearchIcon fontSize="small" />
+        </Box>
+        <InputBase
+          placeholder="Search tools..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          sx={{
+            width: '100%',
+            bgcolor: alpha(theme.palette.primary.main, 0.08),
+            border: 1,
+            borderColor: 'divider',
+            borderRadius: 2,
+            pl: 4,
+            pr: 2,
+            py: 1,
+            fontSize: 14,
+            '&:focus-within': {
+              borderColor: 'primary.main',
+            },
+          }}
+        />
+      </Box>
 
-        {/* Right side */}
-        <div className="flex items-center gap-4">
-          {/* Platform badge */}
-          {platformInfo && (
-            <div className="flex items-center gap-2 text-sm text-slate-400">
-              <span className="px-2 py-1 bg-slate-700 rounded capitalize">
-                {platformInfo.os}
-              </span>
-              <span className="px-2 py-1 bg-slate-700 rounded uppercase">
-                {platformInfo.arch}
-              </span>
-            </div>
-          )}
+      {/* Right side */}
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        {/* Platform badges */}
+        {platformInfo && (
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <Chip
+              label={platformInfo.os}
+              size="small"
+              sx={{
+                textTransform: 'capitalize',
+                bgcolor: 'background.default',
+              }}
+            />
+            <Chip
+              label={platformInfo.arch}
+              size="small"
+              sx={{
+                textTransform: 'uppercase',
+                bgcolor: 'background.default',
+              }}
+            />
+          </Box>
+        )}
 
-          {/* Notifications */}
-          <button className="relative p-2 text-slate-400 hover:text-white transition-colors">
-            <BellIcon className="w-5 h-5" />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-          </button>
-        </div>
-      </div>
-    </header>
+        {/* Notifications */}
+        <IconButton size="small">
+          <Badge color="error" variant="dot">
+            <NotificationsIcon fontSize="small" />
+          </Badge>
+        </IconButton>
+      </Box>
+    </Box>
   );
 };

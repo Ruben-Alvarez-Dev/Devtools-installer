@@ -1,4 +1,7 @@
 import React from 'react';
+import { Box, Drawer, useTheme } from '@mui/material';
+
+const DRAWER_WIDTH = 280;
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -6,17 +9,41 @@ interface LayoutProps {
 }
 
 export const Layout: React.FC<LayoutProps> = ({ children, sidebar }) => {
+  const theme = useTheme();
+
   return (
-    <div className="flex h-screen bg-slate-900 text-white overflow-hidden">
+    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'background.default' }}>
       {/* Sidebar */}
-      <aside className="w-64 bg-slate-800 border-r border-slate-700 flex flex-col">
+      <Drawer
+        variant="permanent"
+        sx={{
+          width: DRAWER_WIDTH,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: DRAWER_WIDTH,
+            boxSizing: 'border-box',
+            bgcolor: 'background.paper',
+            borderRight: 1,
+            borderColor: 'divider',
+          },
+        }}
+      >
         {sidebar}
-      </aside>
+      </Drawer>
 
       {/* Main content */}
-      <main className="flex-1 flex flex-col overflow-hidden">
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          minHeight: '100vh',
+          overflow: 'hidden',
+        }}
+      >
         {children}
-      </main>
-    </div>
+      </Box>
+    </Box>
   );
 };

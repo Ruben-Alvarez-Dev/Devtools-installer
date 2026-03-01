@@ -1,26 +1,44 @@
 import React from 'react';
 import {
-  CubeIcon,
-  CodeBracketIcon,
-  CloudIcon,
-  CommandLineIcon,
-  Cog6ToothIcon,
-  ArrowPathIcon
-} from '@heroicons/react/24/outline';
+  Box,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+  IconButton,
+  Divider,
+} from '@mui/material';
+import {
+  Settings as SettingsIcon,
+  Cached as CachedIcon,
+  Apps as AppsIcon,
+  Code as CodeIcon,
+  Cloud as CloudIcon,
+  Terminal as TerminalIcon,
+  SmartToy as SmartToyIcon,
+  Psychology as PsychologyIcon,
+  Extension as ExtensionIcon,
+  Storage as StorageIcon,
+  Dns as DnsIcon,
+  Widgets as WidgetsIcon,
+} from '@mui/icons-material';
 import { useAppStore } from '../stores/appStore';
+import { categoryLabels } from '../theme';
 
 const categoryIcons: Record<string, React.ReactNode> = {
-  runtime: <CubeIcon className="w-5 h-5" />,
-  ide: <CodeBracketIcon className="w-5 h-5" />,
-  devops: <CloudIcon className="w-5 h-5" />,
-  cli: <CommandLineIcon className="w-5 h-5" />,
-};
-
-const categoryLabels: Record<string, string> = {
-  runtime: 'Runtimes',
-  ide: 'IDEs',
-  devops: 'DevOps / Cloud',
-  cli: 'CLI Tools',
+  runtime: <AppsIcon />,
+  ide: <CodeIcon />,
+  ai_ide: <SmartToyIcon />,
+  ai_cli: <PsychologyIcon />,
+  ai_extension: <ExtensionIcon />,
+  local_model: <StorageIcon />,
+  self_hosted: <DnsIcon />,
+  devops: <CloudIcon />,
+  cli: <TerminalIcon />,
+  database: <DnsIcon />,
+  framework: <WidgetsIcon />,
 };
 
 export const Sidebar: React.FC = () => {
@@ -32,51 +50,87 @@ export const Sidebar: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* Logo */}
-      <div className="p-4 border-b border-slate-700">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-            <ArrowPathIcon className="w-6 h-6 text-white" />
-          </div>
-          <div>
-            <h1 className="font-bold text-lg">DevTools</h1>
-            <p className="text-xs text-slate-400">Installer</p>
-          </div>
-        </div>
-      </div>
+      <Box sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Box
+          sx={{
+            width: 40,
+            height: 40,
+            borderRadius: 2,
+            background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <CachedIcon sx={{ color: 'white', fontSize: 24 }} />
+        </Box>
+        <Box>
+          <Typography variant="h6" fontWeight={700}>
+            DevTools
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            Installer
+          </Typography>
+        </Box>
+      </Box>
+
+      <Divider />
 
       {/* Navigation */}
-      <nav className="flex-1 p-3 overflow-y-auto">
-        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 px-3">
-          Categories
-        </p>
-        <ul className="space-y-1">
-          {categories.map((category) => (
-            <li key={category}>
-              <button
-                onClick={() => handleCategoryClick(category)}
-                className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
-                  selectedCategory === category
-                    ? 'bg-blue-600 text-white'
-                    : 'text-slate-300 hover:bg-slate-700'
-                }`}
-              >
-                {categoryIcons[category]}
-                <span>{categoryLabels[category] || category}</span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <List sx={{ flex: 1, overflowY: 'auto', px: 1, py: 2 }}>
+        <Typography
+          variant="caption"
+          sx={{ px: 2, py: 1, display: 'block', fontWeight: 600, color: 'text.secondary' }}
+        >
+          CATEGORIES
+        </Typography>
+        {categories.map((category) => (
+          <ListItem key={category} disablePadding>
+            <ListItemButton
+              selected={selectedCategory === category}
+              onClick={() => handleCategoryClick(category)}
+              sx={{
+                borderRadius: 2,
+                mx: 1,
+                '&.Mui-selected': {
+                  bgcolor: 'primary.main',
+                  color: 'white',
+                  '&:hover': {
+                    bgcolor: 'primary.dark',
+                  },
+                  '& .MuiListItemIcon-root': {
+                    color: 'white',
+                  },
+                },
+              }}
+            >
+              <ListItemIcon sx={{ minWidth: 40 }}>
+                {categoryIcons[category] || <AppsIcon />}
+              </ListItemIcon>
+              <ListItemText
+                primary={categoryLabels[category] || category}
+                primaryTypographyProps={{ fontSize: 14 }}
+              />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+
+      <Divider />
 
       {/* Footer */}
-      <div className="p-3 border-t border-slate-700">
-        <button className="w-full flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors">
-          <Cog6ToothIcon className="w-5 h-5" />
-          <span>Settings</span>
-        </button>
-      </div>
-    </div>
+      <Box sx={{ p: 1 }}>
+        <ListItem disablePadding>
+          <ListItemButton sx={{ borderRadius: 2 }}>
+            <ListItemIcon sx={{ minWidth: 40 }}>
+              <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Settings" primaryTypographyProps={{ fontSize: 14 }} />
+          </ListItemButton>
+        </ListItem>
+      </Box>
+    </Box>
   );
 };
