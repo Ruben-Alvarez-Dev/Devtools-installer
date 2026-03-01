@@ -1,7 +1,9 @@
 import React from 'react';
+import { Box, Typography, Grid } from '@mui/material';
 import { useAppStore } from '../stores/appStore';
 import { ToolCard } from '../components/ToolCard';
 import { Header } from '../components/Header';
+import { categoryLabels } from '../theme';
 
 export const Catalog: React.FC = () => {
   const {
@@ -22,32 +24,40 @@ export const Catalog: React.FC = () => {
     return matchesCategory && matchesSearch;
   });
 
+  const getTitle = () => {
+    if (selectedCategory) {
+      return `${categoryLabels[selectedCategory] || selectedCategory} Tools`;
+    }
+    return 'All Tools';
+  };
+
   return (
-    <div className="flex-1 flex flex-col overflow-hidden">
+    <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <Header />
-      <div className="flex-1 overflow-y-auto p-6">
-        <h2 className="text-2xl font-bold text-white mb-6">
-          {selectedCategory ? `${selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)} Tools` : 'All Tools'}
-        </h2>
+      <Box sx={{ flex: 1, overflowY: 'auto', p: 3 }}>
+        <Typography variant="h4" fontWeight={700} sx={{ mb: 3 }}>
+          {getTitle()}
+        </Typography>
 
         {filteredTools.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-slate-400">No tools in this category</p>
-          </div>
+          <Box sx={{ textAlign: 'center', py: 6 }}>
+            <Typography color="text.secondary">No tools in this category</Typography>
+          </Box>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <Grid container spacing={2}>
             {filteredTools.map((tool) => (
-              <ToolCard
-                key={tool.id}
-                tool={tool}
-                state={toolStates[tool.id]}
-                onInstall={onInstall}
-                onSelect={setSelectedToolId}
-              />
+              <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={tool.id}>
+                <ToolCard
+                  tool={tool}
+                  state={toolStates[tool.id]}
+                  onInstall={onInstall}
+                  onSelect={setSelectedToolId}
+                />
+              </Grid>
             ))}
-          </div>
+          </Grid>
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
