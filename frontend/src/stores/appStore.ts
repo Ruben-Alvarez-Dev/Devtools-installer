@@ -1,7 +1,13 @@
 import { create } from 'zustand';
 import { Tool, ToolState, Config, PlatformInfo, InstallProgress } from '../types';
 
+export type PageType = 'dashboard' | 'catalog' | 'sprints' | 'gantt';
+
 interface AppState {
+  // Navigation
+  currentPage: PageType;
+  setCurrentPage: (page: PageType) => void;
+
   // Catalog
   tools: Tool[];
   categories: string[];
@@ -42,6 +48,7 @@ interface AppState {
 
 export const useAppStore = create<AppState>((set) => ({
   // Initial state
+  currentPage: 'dashboard',
   tools: [],
   categories: [],
   isLoading: false,
@@ -55,6 +62,7 @@ export const useAppStore = create<AppState>((set) => ({
   selectedToolId: null,
 
   // Actions
+  setCurrentPage: (currentPage) => set({ currentPage, selectedCategory: null }),
   setTools: (tools) => set({ tools }),
   setCategories: (categories) => set({ categories }),
   setLoading: (isLoading) => set({ isLoading }),

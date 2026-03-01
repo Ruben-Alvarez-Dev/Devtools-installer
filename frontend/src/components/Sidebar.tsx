@@ -7,46 +7,32 @@ import {
   ListItemIcon,
   ListItemText,
   Typography,
-  IconButton,
   Divider,
 } from '@mui/material';
 import {
   Settings as SettingsIcon,
   Cached as CachedIcon,
+  Dashboard as DashboardIcon,
   Apps as AppsIcon,
-  Code as CodeIcon,
-  Cloud as CloudIcon,
-  Terminal as TerminalIcon,
-  SmartToy as SmartToyIcon,
-  Psychology as PsychologyIcon,
-  Extension as ExtensionIcon,
-  Storage as StorageIcon,
-  Dns as DnsIcon,
-  Widgets as WidgetsIcon,
+  CalendarMonth as SprintIcon,
+  Timeline as GanttIcon,
 } from '@mui/icons-material';
-import { useAppStore } from '../stores/appStore';
-import { categoryLabels } from '../theme';
+import { useAppStore, PageType } from '../stores/appStore';
 
-const categoryIcons: Record<string, React.ReactNode> = {
-  runtime: <AppsIcon />,
-  ide: <CodeIcon />,
-  ai_ide: <SmartToyIcon />,
-  ai_cli: <PsychologyIcon />,
-  ai_extension: <ExtensionIcon />,
-  local_model: <StorageIcon />,
-  self_hosted: <DnsIcon />,
-  devops: <CloudIcon />,
-  cli: <TerminalIcon />,
-  database: <DnsIcon />,
-  framework: <WidgetsIcon />,
-};
+const navItems: { id: PageType; label: string; icon: React.ReactNode }[] = [
+  { id: 'dashboard', label: 'Dashboard', icon: <DashboardIcon /> },
+  { id: 'catalog', label: 'Catalog', icon: <AppsIcon /> },
+  { id: 'sprints', label: 'Sprints', icon: <SprintIcon /> },
+  { id: 'gantt', label: 'Gantt Chart', icon: <GanttIcon /> },
+];
 
 export const Sidebar: React.FC = () => {
-  const { categories, selectedCategory, setSelectedCategory, setSelectedToolId } = useAppStore();
+  const { currentPage, setCurrentPage, categories, selectedCategory, setSelectedCategory, setSelectedToolId } = useAppStore();
 
   const handleCategoryClick = (category: string) => {
     setSelectedCategory(selectedCategory === category ? null : category);
     setSelectedToolId(null);
+    setCurrentPage('catalog');
   };
 
   return (
@@ -78,7 +64,40 @@ export const Sidebar: React.FC = () => {
 
       <Divider />
 
-      {/* Navigation */}
+      {/* Main Navigation */}
+      <List sx={{ px: 1, py: 2 }}>
+        <Typography
+          variant="caption"
+          sx={{ px: 2, py: 1, display: 'block', fontWeight: 600, color: 'text.secondary' }}
+        >
+          NAVIGATION
+        </Typography>
+        {navItems.map((item) => (
+          <ListItem key={item.id} disablePadding>
+            <ListItemButton
+              selected={currentPage === item.id}
+              onClick={() => setCurrentPage(item.id)}
+              sx={{
+                borderRadius: 2,
+                mx: 1,
+                '&.Mui-selected': {
+                  bgcolor: 'primary.main',
+                  color: 'white',
+                  '&:hover': { bgcolor: 'primary.dark' },
+                  '& .MuiListItemIcon-root': { color: 'white' },
+                },
+              }}
+            >
+              <ListItemIcon sx={{ minWidth: 40 }}>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.label} primaryTypographyProps={{ fontSize: 14 }} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+
+      <Divider />
+
+      {/* Categories */}
       <List sx={{ flex: 1, overflowY: 'auto', px: 1, py: 2 }}>
         <Typography
           variant="caption"
@@ -89,7 +108,7 @@ export const Sidebar: React.FC = () => {
         {categories.map((category) => (
           <ListItem key={category} disablePadding>
             <ListItemButton
-              selected={selectedCategory === category}
+              selected={selectedCategory === category && currentPage === 'catalog'}
               onClick={() => handleCategoryClick(category)}
               sx={{
                 borderRadius: 2,
@@ -97,21 +116,14 @@ export const Sidebar: React.FC = () => {
                 '&.Mui-selected': {
                   bgcolor: 'primary.main',
                   color: 'white',
-                  '&:hover': {
-                    bgcolor: 'primary.dark',
-                  },
-                  '& .MuiListItemIcon-root': {
-                    color: 'white',
-                  },
+                  '&:hover': { bgcolor: 'primary.dark' },
+                  '& .MuiListItemIcon-root': { color: 'white' },
                 },
               }}
             >
-              <ListItemIcon sx={{ minWidth: 40 }}>
-                {categoryIcons[category] || <AppsIcon />}
-              </ListItemIcon>
               <ListItemText
-                primary={categoryLabels[category] || category}
-                primaryTypographyProps={{ fontSize: 14 }}
+                primary={category.replace('_', ' ').toUpperCase()}
+                primaryTypographyProps={{ fontSize: 12, fontWeight: 500 }}
               />
             </ListItemButton>
           </ListItem>
