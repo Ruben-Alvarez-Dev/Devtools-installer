@@ -153,8 +153,15 @@ func NewManager() *Manager {
 		m.installers[domain.InstallMethodHomebrew] = installer
 		m.installers[domain.InstallMethodHomebrewCask] = &HomebrewCaskInstaller{*installer}
 	}
-
-	// TODO: Add more installers (apt, dnf, winget, etc.)
+	if installer := NewWingetInstaller(); installer.IsAvailable() {
+		m.installers[domain.InstallMethodWinget] = installer
+	}
+	if installer := NewAptInstaller(); installer.IsAvailable() {
+		m.installers[domain.InstallMethodApt] = installer
+	}
+	if installer := NewDnfInstaller(); installer.IsAvailable() {
+		m.installers[domain.InstallMethodDnf] = installer
+	}
 
 	return m
 }
