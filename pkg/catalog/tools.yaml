@@ -1,0 +1,818 @@
+# DevTools Installer Catalog
+# This file contains the tool definitions for the installer
+
+version: "1.0"
+tools:
+  # ===========================================
+  # RUNTIMES
+  # ===========================================
+  - id: nodejs
+    name: Node.js
+    description: JavaScript runtime built on Chrome's V8 engine
+    category: runtime
+    icon: nodejs
+    website: https://nodejs.org
+    documentation: https://nodejs.org/docs
+    tags:
+      - javascript
+      - runtime
+      - server
+    installMethods:
+      - type: homebrew
+        package: node
+        platform: darwin
+      - type: homebrew
+        package: node
+        platform: linux
+      - type: winget
+        package: OpenJS.NodeJS.LTS
+        platform: windows
+      - type: direct
+        url: https://nodejs.org/dist/v22.11.0/node-v22.11.0-darwin-arm64.tar.gz
+        platform: darwin
+        arch: arm64
+
+  - id: python
+    name: Python
+    description: High-level programming language
+    category: runtime
+    icon: python
+    website: https://python.org
+    documentation: https://docs.python.org
+    tags:
+      - python
+      - runtime
+      - scripting
+    installMethods:
+      - type: homebrew
+        package: python@3.12
+        platform: darwin
+      - type: apt
+        package: python3
+        platform: linux
+      - type: winget
+        package: Python.Python.3.12
+        platform: windows
+
+  - id: go
+    name: Go
+    description: Open source programming language by Google
+    category: runtime
+    icon: go
+    website: https://golang.org
+    documentation: https://golang.org/doc
+    tags:
+      - golang
+      - runtime
+      - compiled
+    installMethods:
+      - type: homebrew
+        package: go
+        platform: darwin
+      - type: apt
+        package: golang-go
+        platform: linux
+      - type: winget
+        package: GoLang.Go
+        platform: windows
+
+  - id: rust
+    name: Rust
+    description: Systems programming language focused on safety and performance
+    category: runtime
+    icon: rust
+    website: https://rust-lang.org
+    documentation: https://doc.rust-lang.org
+    tags:
+      - rust
+      - runtime
+      - compiled
+      - systems
+    installMethods:
+      - type: homebrew
+        package: rust
+        platform: darwin
+      - type: script
+        script: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+        platform: linux
+      - type: winget
+        package: Rustlang.Rustup
+        platform: windows
+
+  - id: deno
+    name: Deno
+    description: Secure TypeScript runtime
+    category: runtime
+    icon: deno
+    website: https://deno.land
+    documentation: https://deno.land/manual
+    tags:
+      - typescript
+      - runtime
+      - javascript
+    installMethods:
+      - type: homebrew
+        package: deno
+        platform: darwin
+      - type: homebrew
+        package: deno
+        platform: linux
+      - type: winget
+        package: DenoLand.Deno
+        platform: windows
+
+  # ===========================================
+  # IDEs
+  # ===========================================
+  - id: vscode
+    name: Visual Studio Code
+    description: Lightweight code editor with extensive ecosystem
+    category: ide
+    icon: vscode
+    website: https://code.visualstudio.com
+    documentation: https://code.visualstudio.com/docs
+    tags:
+      - editor
+      - ide
+      - microsoft
+    installMethods:
+      - type: homebrew
+        package: --cask visual-studio-code
+        platform: darwin
+      - type: apt
+        package: code
+        platform: linux
+      - type: winget
+        package: Microsoft.VisualStudioCode
+        platform: windows
+
+  - id: cursor
+    name: Cursor
+    description: AI-first code editor built for pair programming with AI
+    category: ai_ide
+    icon: cursor
+    website: https://cursor.sh
+    documentation: https://cursor.sh/docs
+    whySpecial: Standard AI-IDE with predictive tab, multi-file composer
+    idealUse: Daily development with AI
+    configPath: ~/.cursor/
+    tags:
+      - editor
+      - ide
+      - ai
+      - vscode-fork
+    installMethods:
+      - type: homebrew-cask
+        package: cursor
+        platform: darwin
+      - type: winget
+        package: Cursor.Cursor
+        platform: windows
+
+  # ===========================================
+  # AI IDEs
+  # ===========================================
+  - id: windsurf
+    name: Windsurf
+    description: AI IDE with unlimited free autocompletion
+    category: ai_ide
+    icon: windsurf
+    website: https://codeium.com/windsurf
+    whySpecial: Unlimited free autocompletion, no artificial limits
+    idealUse: Day-to-day without cost
+    tags:
+      - editor
+      - ide
+      - ai
+      - free
+    installMethods:
+      - type: direct
+        url: https://codeium.com/windsurf
+        platform: darwin
+      - type: direct
+        url: https://codeium.com/windsurf
+        platform: windows
+
+  - id: zed
+    name: Zed
+    description: High-performance code editor with AI
+    category: ai_ide
+    icon: zed
+    website: https://zed.dev
+    documentation: https://zed.dev/docs
+    whySpecial: The fastest editor with GPU rendering and instant startup
+    idealUse: Maximum speed
+    tags:
+      - editor
+      - ide
+      - ai
+      - rust
+      - fast
+    installMethods:
+      - type: homebrew-cask
+        package: zed
+        platform: darwin
+      - type: script
+        script: curl -f https://zed.dev/install.sh | sh
+        platform: linux
+
+  - id: replit
+    name: Replit
+    description: Cloud-first development environment with AI
+    category: ai_ide
+    icon: replit
+    website: https://replit.com
+    whySpecial: 50+ languages supported with instant deployment
+    idealUse: Cloud and desktop combined
+    tags:
+      - editor
+      - ide
+      - ai
+      - cloud
+    installMethods:
+      - type: direct
+        url: https://replit.com/download
+        platform: darwin
+      - type: direct
+        url: https://replit.com/download
+        platform: windows
+
+  - id: void
+    name: Void
+    description: Privacy-first AI IDE
+    category: ai_ide
+    icon: void
+    website: https://voideditor.com
+    whySpecial: Your code never leaves your machine, bring your own model
+    idealUse: Total privacy
+    tags:
+      - editor
+      - ide
+      - ai
+      - privacy
+      - open-source
+    installMethods:
+      - type: direct
+        url: https://voideditor.com/download
+        platform: darwin
+      - type: direct
+        url: https://voideditor.com/download
+        platform: windows
+
+  # ===========================================
+  # AI CLIs
+  # ===========================================
+  - id: claude-code
+    name: Claude Code
+    description: AI coding assistant for large codebases
+    category: ai_cli
+    icon: claude
+    website: https://claude.ai/code
+    documentation: https://docs.anthropic.com/claude/docs/claude-code
+    whySpecial: Understands 50k+ line projects without configuration
+    idealUse: Large codebases
+    configPath: ~/.claude/
+    tags:
+      - ai
+      - cli
+      - anthropic
+      - coding
+    installMethods:
+      - type: npm
+        package: "@anthropic-ai/claude-code"
+        platform: darwin
+      - type: npm
+        package: "@anthropic-ai/claude-code"
+        platform: linux
+      - type: npm
+        package: "@anthropic-ai/claude-code"
+        platform: windows
+
+  - id: aider
+    name: Aider
+    description: AI pair programming in your terminal
+    category: ai_cli
+    icon: aider
+    website: https://aider.chat
+    documentation: https://aider.chat/docs
+    whySpecial: Every change is automatically committed to git
+    idealUse: Git-first workflow
+    configPath: ~/.aider.conf.yml
+    tags:
+      - ai
+      - cli
+      - git
+      - pair-programming
+    installMethods:
+      - type: pip
+        package: aider-chat
+        platform: darwin
+      - type: pip
+        package: aider-chat
+        platform: linux
+      - type: pip
+        package: aider-chat
+        platform: windows
+
+  - id: goose
+    name: Goose
+    description: Autonomous AI developer agent
+    category: ai_cli
+    icon: goose
+    website: https://github.com/block/goose
+    whySpecial: Runs locally with no API limits
+    idealUse: Autonomous agent
+    configPath: ~/.config/goose/
+    tags:
+      - ai
+      - cli
+      - autonomous
+      - local
+    installMethods:
+      - type: script
+        script: curl -fsSL https://github.com/block/goose/releases/latest/download/install.sh | sh
+        platform: darwin
+      - type: script
+        script: curl -fsSL https://github.com/block/goose/releases/latest/download/install.sh | sh
+        platform: linux
+
+  - id: gemini-cli
+    name: Gemini CLI
+    description: Google Gemini command-line interface
+    category: ai_cli
+    icon: gemini
+    website: https://github.com/google-gemini/gemini-cli
+    whySpecial: 1000 requests per day free with 1M tokens context
+    idealUse: Free tier with Gemini
+    tags:
+      - ai
+      - cli
+      - google
+      - free
+    installMethods:
+      - type: npm
+        package: "@anthropic-ai/gemini-cli"
+        platform: darwin
+      - type: npm
+        package: "@anthropic-ai/gemini-cli"
+        platform: linux
+      - type: npm
+        package: "@anthropic-ai/gemini-cli"
+        platform: windows
+
+  - id: openai-codex
+    name: Codex CLI
+    description: OpenAI command-line coding assistant
+    category: ai_cli
+    icon: openai
+    website: https://github.com/openai/codex
+    whySpecial: Backend and parallel execution with GitHub native integration
+    idealUse: Batch tasks
+    tags:
+      - ai
+      - cli
+      - openai
+      - coding
+    installMethods:
+      - type: npm
+        package: "@openai/codex"
+        platform: darwin
+      - type: npm
+        package: "@openai/codex"
+        platform: linux
+      - type: npm
+        package: "@openai/codex"
+        platform: windows
+
+  # ===========================================
+  # AI EXTENSIONS
+  # ===========================================
+  - id: github-copilot
+    name: GitHub Copilot
+    description: AI pair programmer by GitHub
+    category: ai_extension
+    icon: github
+    website: https://github.com/features/copilot
+    documentation: https://docs.github.com/copilot
+    whySpecial: Best IDE integration with support for 37+ languages
+    idealUse: Enterprise standard
+    tags:
+      - ai
+      - extension
+      - github
+      - vscode
+    installMethods:
+      - type: direct
+        url: https://marketplace.visualstudio.com/items?itemName=GitHub.copilot
+        platform: darwin
+      - type: direct
+        url: https://marketplace.visualstudio.com/items?itemName=GitHub.copilot
+        platform: linux
+      - type: direct
+        url: https://marketplace.visualstudio.com/items?itemName=GitHub.copilot
+        platform: windows
+
+  - id: cline
+    name: Cline
+    description: Autonomous AI coding agent for VS Code
+    category: ai_extension
+    icon: cline
+    website: https://cline.bot
+    documentation: https://docs.cline.bot
+    whySpecial: Human-in-the-loop with confirmation at every step
+    idealUse: Full control over AI actions
+    configPath: ~/.vscode/extensions/cline/
+    tags:
+      - ai
+      - extension
+      - autonomous
+      - vscode
+    installMethods:
+      - type: direct
+        url: https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev
+        platform: darwin
+      - type: direct
+        url: https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev
+        platform: linux
+      - type: direct
+        url: https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev
+        platform: windows
+
+  - id: continue
+    name: Continue
+    description: Open source AI code assistant
+    category: ai_extension
+    icon: continue
+    website: https://continue.dev
+    documentation: https://continue.dev/docs
+    whySpecial: Completely customizable with support for any LLM
+    idealUse: Open source flexibility
+    configPath: ~/.continue/
+    tags:
+      - ai
+      - extension
+      - open-source
+      - vscode
+    installMethods:
+      - type: direct
+        url: https://marketplace.visualstudio.com/items?itemName=Continue.continue
+        platform: darwin
+      - type: direct
+        url: https://marketplace.visualstudio.com/items?itemName=Continue.continue
+        platform: linux
+      - type: direct
+        url: https://marketplace.visualstudio.com/items?itemName=Continue.continue
+        platform: windows
+
+  - id: codeium
+    name: Codeium
+    description: Free AI coding assistant
+    category: ai_extension
+    icon: codeium
+    website: https://codeium.com
+    documentation: https://codeium.com/docs
+    whySpecial: Best free Copilot alternative with 70+ languages
+    idealUse: Free unlimited autocomplete
+    tags:
+      - ai
+      - extension
+      - free
+      - vscode
+    installMethods:
+      - type: direct
+        url: https://marketplace.visualstudio.com/items?itemName=Codeium.codeium
+        platform: darwin
+      - type: direct
+        url: https://marketplace.visualstudio.com/items?itemName=Codeium.codeium
+        platform: linux
+      - type: direct
+        url: https://marketplace.visualstudio.com/items?itemName=Codeium.codeium
+        platform: windows
+
+  - id: cody
+    name: Cody
+    description: AI coding assistant by Sourcegraph
+    category: ai_extension
+    icon: cody
+    website: https://sourcegraph.com/cody
+    documentation: https://sourcegraph.com/docs/cody
+    whySpecial: Understands giant repositories via Sourcegraph
+    idealUse: Large codebase search
+    tags:
+      - ai
+      - extension
+      - sourcegraph
+      - vscode
+    installMethods:
+      - type: direct
+        url: https://marketplace.visualstudio.com/items?itemName=sourcegraph.cody-ai
+        platform: darwin
+      - type: direct
+        url: https://marketplace.visualstudio.com/items?itemName=sourcegraph.cody-ai
+        platform: linux
+      - type: direct
+        url: https://marketplace.visualstudio.com/items?itemName=sourcegraph.cody-ai
+        platform: windows
+
+  # ===========================================
+  # LOCAL MODELS
+  # ===========================================
+  - id: ollama
+    name: Ollama
+    description: Run LLMs locally with one command
+    category: local_model
+    icon: ollama
+    website: https://ollama.ai
+    documentation: https://github.com/ollama/ollama/tree/main/docs
+    whySpecial: One line install with OpenAI-compatible API
+    idealUse: Standard local LLM runtime
+    configPath: ~/.ollama/
+    tags:
+      - ai
+      - local
+      - llm
+      - open-source
+    installMethods:
+      - type: homebrew
+        package: ollama
+        platform: darwin
+      - type: script
+        script: curl -fsSL https://ollama.ai/install.sh | sh
+        platform: linux
+      - type: direct
+        url: https://ollama.ai/download
+        platform: windows
+
+  - id: lm-studio
+    name: LM Studio
+    description: GUI for running local LLMs
+    category: local_model
+    icon: lmstudio
+    website: https://lmstudio.ai
+    documentation: https://lmstudio.ai/docs
+    whySpecial: Best GUI with visual model download and management
+    idealUse: Visual local model management
+    tags:
+      - ai
+      - local
+      - llm
+      - gui
+    installMethods:
+      - type: direct
+        url: https://lmstudio.ai/download
+        platform: darwin
+      - type: direct
+        url: https://lmstudio.ai/download
+        platform: windows
+
+  - id: jan
+    name: Jan
+    description: 100% offline AI assistant
+    category: local_model
+    icon: jan
+    website: https://jan.ai
+    documentation: https://jan.ai/docs
+    whySpecial: Everything runs locally, no internet required
+    idealUse: Complete offline usage
+    configPath: ~/.jan/
+    tags:
+      - ai
+      - local
+      - llm
+      - offline
+      - open-source
+    installMethods:
+      - type: direct
+        url: https://jan.ai/download
+        platform: darwin
+      - type: direct
+        url: https://jan.ai/download
+        platform: windows
+
+  - id: gpt4all
+    name: GPT4All
+    description: Run LLMs on any laptop without GPU
+    category: local_model
+    icon: gpt4all
+    website: https://gpt4all.io
+    documentation: https://docs.gpt4all.io
+    whySpecial: Runs on any laptop without requiring a GPU
+    idealUse: Low-resource local inference
+    tags:
+      - ai
+      - local
+      - llm
+      - cpu
+      - open-source
+    installMethods:
+      - type: direct
+        url: https://gpt4all.io/installers/gpt4all-installer-darwin.dmg
+        platform: darwin
+      - type: direct
+        url: https://gpt4all.io/installers/gpt4all-installer-win64.exe
+        platform: windows
+
+  - id: localai
+    name: LocalAI
+    description: Self-hosted OpenAI-compatible API
+    category: local_model
+    icon: localai
+    website: https://localai.io
+    documentation: https://localai.io/basics/getting_started
+    whySpecial: Drop-in OpenAI replacement, your code stays unchanged
+    idealUse: OpenAI API compatibility
+    tags:
+      - ai
+      - local
+      - llm
+      - api
+      - open-source
+    installMethods:
+      - type: script
+        script: curl -sfL https://localai.io/install.sh | sh
+        platform: darwin
+      - type: script
+        script: curl -sfL https://localai.io/install.sh | sh
+        platform: linux
+
+  # ===========================================
+  # DEVOPS / CLOUD
+  # ===========================================
+  - id: docker
+    name: Docker
+    description: Container platform for building and running applications
+    category: devops
+    icon: docker
+    website: https://docker.com
+    documentation: https://docs.docker.com
+    tags:
+      - containers
+      - devops
+      - virtualization
+    installMethods:
+      - type: homebrew
+        package: --cask docker
+        platform: darwin
+      - type: apt
+        package: docker-ce
+        platform: linux
+      - type: winget
+        package: Docker.DockerDesktop
+        platform: windows
+
+  - id: kubectl
+    name: kubectl
+    description: Command line tool for Kubernetes clusters
+    category: devops
+    icon: kubernetes
+    website: https://kubernetes.io
+    documentation: https://kubernetes.io/docs
+    tags:
+      - kubernetes
+      - devops
+      - cli
+    installMethods:
+      - type: homebrew
+        package: kubectl
+        platform: darwin
+      - type: apt
+        package: kubectl
+        platform: linux
+      - type: winget
+        package: Kubernetes.kubectl
+        platform: windows
+
+  - id: terraform
+    name: Terraform
+    description: Infrastructure as Code tool
+    category: devops
+    icon: terraform
+    website: https://terraform.io
+    documentation: https://terraform.io/docs
+    tags:
+      - iac
+      - devops
+      - infrastructure
+    installMethods:
+      - type: homebrew
+        package: terraform
+        platform: darwin
+      - type: apt
+        package: terraform
+        platform: linux
+      - type: winget
+        package: HashiCorp.Terraform
+        platform: windows
+
+  # ===========================================
+  # CLI TOOLS
+  # ===========================================
+  - id: git
+    name: Git
+    description: Distributed version control system
+    category: cli
+    icon: git
+    website: https://git-scm.com
+    documentation: https://git-scm.com/doc
+    tags:
+      - vcs
+      - cli
+      - version-control
+    installMethods:
+      - type: homebrew
+        package: git
+        platform: darwin
+      - type: apt
+        package: git
+        platform: linux
+      - type: winget
+        package: Git.Git
+        platform: windows
+
+  - id: gh
+    name: GitHub CLI
+    description: GitHub command line interface
+    category: cli
+    icon: github
+    website: https://cli.github.com
+    documentation: https://cli.github.com/manual
+    tags:
+      - github
+      - cli
+      - api
+    installMethods:
+      - type: homebrew
+        package: gh
+        platform: darwin
+      - type: apt
+        package: gh
+        platform: linux
+      - type: winget
+        package: GitHub.cli
+        platform: windows
+
+  - id: ripgrep
+    name: ripgrep
+    description: Fast recursive search tool
+    category: cli
+    icon: search
+    website: https://github.com/BurntSushi/ripgrep
+    documentation: https://github.com/BurntSushi/ripgrep/blob/master/README.md
+    tags:
+      - search
+      - cli
+      - fast
+    installMethods:
+      - type: homebrew
+        package: ripgrep
+        platform: darwin
+      - type: apt
+        package: ripgrep
+        platform: linux
+      - type: winget
+        package: BurntSushi.ripgrep.MSVC
+        platform: windows
+
+  - id: fd
+    name: fd
+    description: Fast alternative to find
+    category: cli
+    icon: search
+    website: https://github.com/sharkdp/fd
+    documentation: https://github.com/sharkdp/fd/blob/master/README.md
+    tags:
+      - search
+      - cli
+      - fast
+    installMethods:
+      - type: homebrew
+        package: fd
+        platform: darwin
+      - type: apt
+        package: fd-find
+        platform: linux
+      - type: winget
+        package: sharkdp.fd
+        platform: windows
+
+  - id: bat
+    name: bat
+    description: Cat clone with syntax highlighting
+    category: cli
+    icon: terminal
+    website: https://github.com/sharkdp/bat
+    documentation: https://github.com/sharkdp/bat/blob/master/README.md
+    tags:
+      - cli
+      - syntax
+      - viewer
+    installMethods:
+      - type: homebrew
+        package: bat
+        platform: darwin
+      - type: apt
+        package: bat
+        platform: linux
+      - type: winget
+        package: sharkdp.bat
+        platform: windows

@@ -1,0 +1,216 @@
+openapi: 3.1.0
+info:
+  title: DevTools Installer API
+  version: 1.0.0
+  description: API for managing development tools catalog
+
+paths:
+  /catalog:
+    get:
+      operationId: getCatalog
+      summary: Get all tools in catalog
+      responses:
+        '200':
+          description: List of tools
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tool'
+
+  /catalog/categories:
+    get:
+      operationId: getCategories
+      summary: Get all available categories
+      responses:
+        '200':
+          description: List of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+
+  /catalog/{id}:
+    get:
+      operationId: getToolById
+      summary: Get tool by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Tool details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tool'
+        '404':
+          description: Tool not found
+
+  /catalog/category/{category}:
+    get:
+      operationId: getToolsByCategory
+      summary: Get tools by category
+      parameters:
+        - name: category
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/Category'
+      responses:
+        '200':
+          description: List of tools in category
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tool'
+
+  /catalog/search:
+    get:
+      operationId: searchTools
+      summary: Search tools by query
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tool'
+
+components:
+  schemas:
+    Category:
+      type: string
+      enum:
+        - runtime
+        - ide
+        - ai_ide
+        - ai_cli
+        - ai_extension
+        - local_model
+        - self_hosted
+        - devops
+        - cli
+        - database
+        - framework
+
+    InstallMethodType:
+      type: string
+      enum:
+        - homebrew
+        - homebrew-cask
+        - apt
+        - dnf
+        - winget
+        - choco
+        - snap
+        - direct
+        - script
+        - npm
+        - pip
+        - cargo
+        - go
+
+    Platform:
+      type: string
+      enum:
+        - darwin
+        - linux
+        - windows
+
+    Arch:
+      type: string
+      enum:
+        - amd64
+        - arm64
+        - x86
+        - universal
+
+    InstallMethod:
+      type: object
+      required:
+        - type
+        - platform
+      properties:
+        type:
+          $ref: '#/components/schemas/InstallMethodType'
+        package:
+          type: string
+        url:
+          type: string
+          format: uri
+        checksum:
+          type: string
+        script:
+          type: string
+        platform:
+          $ref: '#/components/schemas/Platform'
+        arch:
+          $ref: '#/components/schemas/Arch'
+        env:
+          type: object
+          additionalProperties:
+            type: string
+
+    Tool:
+      type: object
+      required:
+        - id
+        - name
+        - description
+        - category
+        - installMethods
+      properties:
+        id:
+          type: string
+          pattern: '^[a-z0-9-]+$'
+        name:
+          type: string
+          minLength: 1
+        description:
+          type: string
+          minLength: 10
+        category:
+          $ref: '#/components/schemas/Category'
+        icon:
+          type: string
+        website:
+          type: string
+          format: uri
+        documentation:
+          type: string
+          format: uri
+        whySpecial:
+          type: string
+          description: What makes this tool unique
+        idealUse:
+          type: string
+          description: Ideal use case
+        configPath:
+          type: string
+          description: Path to config file
+        tags:
+          type: array
+          items:
+            type: string
+        installMethods:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/InstallMethod'
