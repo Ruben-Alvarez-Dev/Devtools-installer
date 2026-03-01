@@ -6,7 +6,6 @@ import {
   Typography,
   Chip,
   Button,
-  IconButton,
   alpha,
   useTheme,
 } from '@mui/material';
@@ -16,17 +15,19 @@ import {
   GetApp as InstallIcon,
   Autorenew as UpdatingIcon,
 } from '@mui/icons-material';
-import { Tool, ToolState } from '../types';
+import { Tool, ToolState, InstallProgress } from '../types';
 import { categoryColors } from '../theme';
+import { InstallProgressBar } from './InstallProgressBar';
 
 interface ToolCardProps {
   tool: Tool;
   state?: ToolState;
+  installProgress?: InstallProgress;
   onInstall: (toolId: string) => void;
   onSelect: (toolId: string) => void;
 }
 
-export const ToolCard: React.FC<ToolCardProps> = ({ tool, state, onInstall, onSelect }) => {
+export const ToolCard: React.FC<ToolCardProps> = ({ tool, state, installProgress, onInstall, onSelect }) => {
   const theme = useTheme();
   const isInstalled = state?.status === 'installed';
   const isInstalling = state?.status === 'installing' || state?.status === 'updating';
@@ -176,6 +177,11 @@ export const ToolCard: React.FC<ToolCardProps> = ({ tool, state, onInstall, onSe
           <Typography variant="caption" color="text.disabled" sx={{ display: 'block', textAlign: 'center', mt: 1 }}>
             v{state.installedVersion.version}
           </Typography>
+        )}
+
+        {/* Install progress */}
+        {installProgress && isInstalling && (
+          <InstallProgressBar progress={installProgress} compact />
         )}
       </CardContent>
     </Card>

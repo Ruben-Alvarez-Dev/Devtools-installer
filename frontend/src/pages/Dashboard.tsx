@@ -17,6 +17,7 @@ export const Dashboard: React.FC = () => {
   const {
     tools,
     toolStates,
+    installProgress,
     selectedCategory,
     searchQuery,
     isLoading,
@@ -115,6 +116,7 @@ export const Dashboard: React.FC = () => {
                 <ToolCard
                   tool={tool}
                   state={toolStates[tool.id]}
+                  installProgress={installProgress[tool.id]}
                   onInstall={onInstall}
                   onSelect={handleSelectTool}
                 />
@@ -128,6 +130,7 @@ export const Dashboard: React.FC = () => {
       <ToolDetailModal
         tool={selectedTool}
         state={selectedToolId ? toolStates[selectedToolId] : undefined}
+        installProgress={selectedToolId ? installProgress[selectedToolId] : undefined}
         open={detailOpen}
         onClose={handleCloseDetail}
         onInstall={onInstall}

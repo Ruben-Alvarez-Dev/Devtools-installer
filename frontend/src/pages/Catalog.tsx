@@ -9,6 +9,7 @@ export const Catalog: React.FC = () => {
   const {
     tools,
     toolStates,
+    installProgress,
     selectedCategory,
     searchQuery,
     onInstall,
@@ -50,6 +51,7 @@ export const Catalog: React.FC = () => {
                 <ToolCard
                   tool={tool}
                   state={toolStates[tool.id]}
+                  installProgress={installProgress[tool.id]}
                   onInstall={onInstall}
                   onSelect={setSelectedToolId}
                 />

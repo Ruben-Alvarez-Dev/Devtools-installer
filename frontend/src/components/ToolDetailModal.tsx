@@ -10,7 +10,6 @@ import {
   Button,
   Grid,
   Link,
-  Divider,
   IconButton,
 } from '@mui/material';
 import {
@@ -18,14 +17,15 @@ import {
   GetApp as InstallIcon,
   OpenInNew as LinkIcon,
   CheckCircle as InstalledIcon,
-  Schedule as PendingIcon,
 } from '@mui/icons-material';
-import { Tool, ToolState } from '../types';
+import { Tool, ToolState, InstallProgress } from '../types';
 import { categoryColors, categoryLabels } from '../theme';
+import { InstallProgressBar } from './InstallProgressBar';
 
 interface ToolDetailModalProps {
   tool: Tool | null;
   state?: ToolState;
+  installProgress?: InstallProgress;
   open: boolean;
   onClose: () => void;
   onInstall: (toolId: string) => void;
@@ -34,6 +34,7 @@ interface ToolDetailModalProps {
 export const ToolDetailModal: React.FC<ToolDetailModalProps> = ({
   tool,
   state,
+  installProgress,
   open,
   onClose,
   onInstall,
@@ -41,6 +42,7 @@ export const ToolDetailModal: React.FC<ToolDetailModalProps> = ({
   if (!tool) return null;
 
   const isInstalled = state?.status === 'installed';
+  const isInstalling = state?.status === 'installing' || state?.status === 'updating';
   const categoryColor = categoryColors[tool.category] || '#64748b';
 
   return (
@@ -195,6 +197,13 @@ export const ToolDetailModal: React.FC<ToolDetailModalProps> = ({
             ))}
           </Box>
         </Box>
+
+        {/* Installation Progress */}
+        {installProgress && isInstalling && (
+          <Box sx={{ mt: 3 }}>
+            <InstallProgressBar progress={installProgress} toolName={tool.name} />
+          </Box>
+        )}
       </DialogContent>
 
       <DialogActions sx={{ px: 3, py: 2 }}>
