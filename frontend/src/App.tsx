@@ -5,6 +5,8 @@ import { Sidebar } from './components/Sidebar';
 import { Dashboard } from './pages/Dashboard';
 import { Catalog } from './pages/Catalog';
 import { SprintsPage, GanttPage } from './pages/Sprints';
+import { BacklogPage } from './pages/BacklogPage';
+import { MetricsPage } from './pages/MetricsPage';
 import { darkTheme } from './theme';
 import { useWails } from './hooks/useWails';
 import { useAppStore } from './stores/appStore';
@@ -24,6 +26,10 @@ function App() {
         return <SprintsPage />;
       case 'gantt':
         return <GanttPage />;
+      case 'backlog':
+        return <BacklogPage />;
+      case 'metrics':
+        return <MetricsPage />;
       default:
         return <Dashboard />;
     }

@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { Tool, ToolState, Config, PlatformInfo, InstallProgress } from '../types';
 
-export type PageType = 'dashboard' | 'catalog' | 'sprints' | 'gantt';
+export type PageType = 'dashboard' | 'catalog' | 'sprints' | 'gantt' | 'backlog' | 'metrics';
 
 interface AppState {
   // Navigation

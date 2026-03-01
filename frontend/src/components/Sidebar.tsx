@@ -16,6 +16,8 @@ import {
   Apps as AppsIcon,
   CalendarMonth as SprintIcon,
   Timeline as GanttIcon,
+  FormatListBulleted as BacklogIcon,
+  BarChart as MetricsIcon,
 } from '@mui/icons-material';
 import { useAppStore, PageType } from '../stores/appStore';
 
@@ -24,6 +26,8 @@ const navItems: { id: PageType; label: string; icon: React.ReactNode }[] = [
   { id: 'catalog', label: 'Catalog', icon: <AppsIcon /> },
   { id: 'sprints', label: 'Sprints', icon: <SprintIcon /> },
   { id: 'gantt', label: 'Gantt Chart', icon: <GanttIcon /> },
+  { id: 'backlog', label: 'Backlog', icon: <BacklogIcon /> },
+  { id: 'metrics', label: 'Metrics', icon: <MetricsIcon /> },
 ];
 
 export const Sidebar: React.FC = () => {
